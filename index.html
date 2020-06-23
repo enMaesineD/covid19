@@ -42,7 +42,7 @@
               
             <ul class="collection">
             <li class="collection-item avatar">
-                <img src="coviddrawing.jpg" alt="" class="circle">
+                
                 <span class="title">Title</span>
                 <p>Hi I'm trying how this works <br>
                      Second Line
@@ -77,7 +77,7 @@
         
         </div>
           <div class="col s12 m6 l6 orange">Map</div>
-          <div class="col s12 m3 l3 blue">Graph</div>
+          <div class="col s12 m3 l3 blue" id="mylist"></div>
         </div>
         
         <h1>Covid-19 Dashboard</h1>
@@ -114,5 +114,32 @@
         </footer>
     
     </body>
+    
+    <script>
+        
+        function makelist() {
+            
+            data = [{pname:"NYC",cname:"USA",conf:218000},
+                    {pname:"Moscow",cname:"Russia",conf:212000}, {pname:"Sao Paulo",cname:"Brazil",conf:100000}]; 
+            
+            mylist = document.getElementById("mylist");
+            
+            myhtml = "<ul class = 'collection'>";
+            for(i=0; i<data.length; i++) {
+                myhtml = myhtml + "<li class='collection-item avatar>"
+                myhtml = myhtml + "<i class='material-icons circle'>folder</i>"
+                myhtml = myhtml + "<b>" + data[i]['pname'] + "</b> <br>"
+                myhtml = myhtml + "<b>" + data[i]['conf'] + "</li>";
+            }
+            myhtml = myhtml + "<ul>";
+            
+            mylist.innerHTML = myhtml;
+            
+        }
+        
+        
+        
+        
+    </script>
 
 </html>
