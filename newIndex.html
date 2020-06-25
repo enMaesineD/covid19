@@ -20,6 +20,9 @@
   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
   crossorigin=""></script>
         
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js" integrity="sha256-nZaxPHA2uAaquixjSDX19TmIlbRNCOrf5HO1oHl5p70=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css" integrity="sha256-IvM9nJf/b5l2RoebiFno92E5ONttVyaEEsdemDC6iQA=" crossorigin="anonymous" />
+        
         
         
         <style>
@@ -49,47 +52,16 @@
         </nav>
         
         <div class="row">
-          <div class="col s12 m3 l3 blue">
-              
-            <ul class="collection">
-            <li class="collection-item avatar">
-                
-                <span class="title">Title</span>
-                <p>Hi I'm trying how this works <br>
-                     Second Line
-                </p>
-                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-            </li>
-            <li class="collection-item avatar">
-                <i class="material-icons circle">folder</i>
-                <span class="title">Title</span>
-                <p>First Line <br>
-                     Second Line
-                </p>
-                <a href="#!" class="secondary-content"><i class="materialicons">grade</i></a>
-            </li>
-            <li class="collection-item avatar">
-                <i class="material-icons circle green">insert_chart</i>
-                <span class="title">Title</span>
-                <p>First Line <br>
-                     Second Line
-                </p>
-                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-            </li>
-            <li class="collection-item avatar">
-                <i class="material-icons circle red">play_arrow</i>
-                <span class="title">Title</span>
-                <p>First Line <br>
-                     Second Line
-                </p>
-                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-            </li>
-            </ul>
-        
+          <div class="col s12 m3 l3" style="width:50%;">
+            <canvas id="chartjs-2"></canvas>
         </div>
+            
+            
           <div id="map" style="height:500px;" class="col s12 m6 l6 orange">Map</div>
           <div class="col s12 m3 l3 blue" id="mylist"></div>
+
         </div>
+        
         
         <h1>Covid-19 Dashboard</h1>
         <p class="container">This software will provide timely info about the pandemic.</p>
@@ -130,6 +102,7 @@
     <script>
         makelist()
         makeMap()
+        makeChart()
         function makelist() {
             
             //data = [{pname:"NYC",cname:"USA",conf:218000},{pname:"Moscow",cname:"Russia",conf:212000}, {pname:"Sao Paulo",cname:"Brazil",conf:100000}]; 
@@ -156,23 +129,36 @@
         }
         
         function makeMap() {
-            var map = L.map('map').setView([43.653463, -79.384090], 13);
+            var map = L.map('map').setView([30, 0], 1.5);
 
             // load a tile layer
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png',
             {
     
             maxZoom: 17,
-            minZoom: 9
+            minZoom: 1
         }).addTo(map);
         
-        L.circle([43.65, -79.4], {            
-            color: 'red',            
-            fillColor: '#f03',        
-            fillOpacity: 0.5,         
-            radius: 500     
-        }).bindPopup("<h1>My home town</h1>", { maxWidth: "auto"}).addTo(map);
+            for (i=0; i<data.length; i++) {
+                L.circle([data[i]['lat'], data[i]['lon']], {            
+                color: 'red',            
+                fillColor: '#f03',        
+                fillOpacity: 0.5,         
+                radius: data[i]['conf'] * 4    
+                }).bindPopup(data[i]['cname'] + ": " + data[i]['conf'], { maxWidth: "auto"}).addTo(map);
+            }
+        
         }
+        
+        function makeChart(){
+            labels = ['nyc','moscow','frence','iran','turkey'];
+            data = [210000, 207000, 150000, 120000, 75000];
+        
+            new Chart(document.getElementById("chartjs-2"),{"type":"horizontalBar","data":{"labels": labels,"datasets":[{"label":"My First Dataset","data":data,"fill":false,"backgroundColor":["rgba(255, 99, 132, 0.2)","rgba(255, 159, 64, 0.2)","rgba(255, 205, 86, 0.2)","rgba(75, 192, 192, 0.2)","rgba(54, 162, 235, 0.2)","rgba(153, 102, 255, 0.2)","rgba(201, 203, 207, 0.2)"],"borderColor":["rgb(255, 99, 132)","rgb(255, 159, 64)","rgb(255, 205, 86)","rgb(75, 192, 192)","rgb(54, 162, 235)","rgb(153, 102, 255)","rgb(201, 203, 207)"],"borderWidth":1}]},"options":{"scales":{"xAxes":[{"ticks":{"beginAtZero":true}}]}}});
+            
+        }
+        
+        
         
         
         
